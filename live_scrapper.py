@@ -8,9 +8,9 @@ app.config['SECRET_KEY'] = 'secret'
 socketio = SocketIO(app)
 
 reddit = praw.Reddit(
-    client_id="xILKbnbYi-EdMu53o2F_Wg",
-    client_secret="qCuiDM-WPkBztnO-JA2NImp2auQLfQ",
-    user_agent="Scapper 1.o by /u/lazarusec",)
+    client_id="CLIENT_ID",
+    client_secret="CLIENT_SECRET",
+    user_agent="Scrapper 1.0 by /u/lazarusec",)
 
 live_updates = []  # List to store live updates from Reddit
 
