@@ -39,4 +39,4 @@ for submission in subreddit.hot(limit=10):
     post_data = (submission.title, str(submission.author), utc_string, int(submission.score), submission.url)
     cursor.execute(insert_query, post_data)
     conn.commit()
-
+conn.close()
