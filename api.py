@@ -1,15 +1,16 @@
-from flask import Flask
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 import praw
 import datetime
 import mysql.connector
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret'
+app = FastAPI()
 
 reddit = praw.Reddit(
     client_id="CLIENT_ID",
     client_secret="CLIENT_SECRET",
-    user_agent="Scrapper 1.0 by /u/lazarusec",)
+    user_agent="Scrapper 1.0 by /u/lazarusec",
+)
 
 conn = mysql.connector.connect(
     host='localhost',
@@ -20,12 +21,12 @@ conn = mysql.connector.connect(
 
 crawled_posts = []
 
-@app.route('/api/posts')
-def get_posts():
+
+@app.get('/api/posts')
+async def get_posts():
     subreddit = reddit.subreddit('all')
     crawled_posts.clear()
     for post in subreddit.new(limit=10):
-        
         utc_datetime = datetime.datetime.fromtimestamp(post.created_utc)
         utc_string = utc_datetime.strftime("%Y-%m-%d %H:%M:%S")
         crawled_posts.append({
@@ -35,10 +36,12 @@ def get_posts():
         })
     return crawled_posts
 
+
 cursor = conn.cursor()
 
-@app.route('/api/db/posts')
-def get_db_posts():
+
+@app.get('/api/db/posts')
+async def get_db_posts():
     query = "SELECT * FROM posts"
     cursor.execute(query)
     datas = cursor.fetchall()
@@ -46,6 +49,5 @@ def get_db_posts():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=8000)
