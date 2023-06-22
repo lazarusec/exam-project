@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from flask_login import LoginManager, login_user, UserMixin
+from flask import Flask, render_template, request,redirect, url_for
+from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
 
 
 app = Flask(__name__)
@@ -38,8 +38,13 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
+    if request.method == 'POST':
+        logout_user()
+        return redirect(url_for('login'))
+    
     return render_template('logout.html')
 
 if __name__ == '__main__':
