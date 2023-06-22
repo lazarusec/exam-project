@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Ana Sayfaya Hoş Geldiniz</h1>
+    <h2><b>Scrapper Uygulamasına Erişmek için Giriş Yapınız.</b></h2>
+    <div>
+        <a href="/login" class="login">
+            <button >Giriş Yap</button>
+        </a>
+    </div>
+    
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+</body>
+</html>
