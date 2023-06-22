@@ -38,7 +38,8 @@ def send_live_updates():
         live_updates.append({
             'title': post.title,
             'author': post.author.name,
-            'timestamp': utc_string
+            'timestamp': utc_string,
+            'url': post.url
         })
 
     socketio.emit('live_updates', live_updates)
