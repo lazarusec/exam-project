@@ -28,8 +28,7 @@ create_table = """
 
 cursor.execute(create_table)
 
-
-subreddit = reddit.subreddit("games")
+subreddit = reddit.subreddit("all")
 for submission in subreddit.hot(limit=10):
     insert_query = """
         INSERT INTO posts (title, author, timestamp, score, url)
