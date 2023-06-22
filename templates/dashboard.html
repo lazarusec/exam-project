@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Updates from Reddit</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        // Connect to the WebSocket server
+        var socket = io();
+
+        // Event handler for receiving live updates
+        socket.on('live_updates', function(data) {
+            console.log('Connected to server');
+            // Clear the existing table rows
+            var tableBody = document.getElementById('live-updates').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+
+            // Iterate over the live updates and add rows to the table
+            data.forEach(function(post) {
+                var row = '<tr><td>' + post.title + '</td><td>' + post.author + '</td><td>' + post.timestamp + '</td></tr>';
+                tableBody.innerHTML += row;
+            });
+        });
+
+        // Function to request live updates from the server
+        function getLiveUpdates() {
+            socket.emit('get_live_updates');
+        }
+
+        // Initial request for live updates
+        getLiveUpdates();
+
+        // Function to handle refresh button click
+        function handleRefreshClick() {
+            location.reload();
+        }
+    </script>
+</head>
+<body>
+    <h1>Live Updates from Reddit</h1>
+    <button onclick="handleRefreshClick()">Refresh</button>
+    <table id="live-updates">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+</body>
+</html>
